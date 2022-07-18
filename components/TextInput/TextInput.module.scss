@@ -1,0 +1,15 @@
+.TextInput {
+  font-size: 1.6rem;
+  // line-height: 2rem;
+  padding: 1.5rem;
+
+  &_label {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}

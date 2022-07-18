@@ -1,0 +1,11 @@
+.RadioButton {
+    font-size:1.6rem;
+    line-height:2.2rem;
+    padding:1.6rem 0;
+    color:#0B2432;
+    margin-bottom:.8rem;
+    &Checked {
+        border-color:#44831E;
+        font-weight:600;
+    }
+}

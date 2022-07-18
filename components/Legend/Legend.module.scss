@@ -1,0 +1,25 @@
+.legend {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  max-width: 1200px;
+  margin-top: -7rem;
+  .legendItem {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    margin-left: 4.5rem;
+    .legendItemColor {
+      width: 1.5rem;
+      height: 3.4rem;
+      border-radius: 3px;
+      margin-right: 0.4rem;
+    }
+    .legendItemText {
+      font-weight: 500;
+      font-size: 1.6rem;
+    }
+  }
+}

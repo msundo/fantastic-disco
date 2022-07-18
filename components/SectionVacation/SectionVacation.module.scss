@@ -1,0 +1,29 @@
+.SectionVacation {
+
+    &_attentionTitle {
+        font-size: 1.3rem;
+        font-weight: 400;
+        color: #284d62;
+    }
+
+    &_circle {
+        display: flex;
+        width: 4px;
+        background-color: gray;
+        height: 4px;
+        border-radius: 10px;
+    }
+
+    &_title {
+        font-size: 1.2rem;
+        font-weight: 400;
+        color: #284d62;
+        margin-left: 1rem;
+    }
+
+    &_pointer {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+}

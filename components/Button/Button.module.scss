@@ -1,0 +1,12 @@
+.Button {
+  font-size: 1.6rem;
+  line-height: 2.5rem;
+  padding: 1.6rem 3rem;
+  margin: 0 0.75rem;
+  height: 5.5rem;
+
+  &:disabled {
+    background-color: #767676;
+    pointer-events: none;
+  }
+}

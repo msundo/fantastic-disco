@@ -1,0 +1,53 @@
+.DatePickerPopup {
+  &_container {
+    box-shadow: 4px 4px 36px 10px rgba(11, 36, 50, 0.5);
+    padding: 4rem 2rem 2rem;
+   
+    &_title {
+      margin-bottom: 3rem;
+      font-family: var(--font-secondary);
+      font-weight: 600;
+      font-size: 3rem;
+      color: #0B2432;
+    }
+    &_text {
+      font-size: 1.6rem;
+      font-family: var(--font-secondary);
+      line-height: 2.1rem;
+      margin-bottom: 7rem;
+      color: #0B2432;
+    }
+    &_close {
+      width: 3.2rem;
+      height: 3.2rem;
+      border-radius: 50%;
+      background-color: #fff;
+      top: 2rem;
+      right: 2rem;
+
+    }
+    &_buttons {
+      display: flex;
+      flex-direction: column;
+    }
+    &_iconText {
+      display: flex;
+      font-weight: 400;
+      font-size: 1.4rem;
+      line-height: 130%;
+      text-decoration-line: underline;
+      color: #0B2432;
+      margin-top: 2.5rem;
+      margin-bottom: 0.5rem;
+      justify-content: center;
+  
+      &:before {
+        content: url('/svgs/trash.svg');
+        display: block;
+        width: 2.2rem;
+        height: auto;
+        margin-left: 0.7rem;
+      }
+    }
+  }
+}

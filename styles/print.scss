@@ -1,0 +1,20 @@
+// Hide elements
+.sectionleavePrint {
+    display: none;
+
+    @media print {
+        display: block;
+    }
+}
+
+@media print {
+    .header,
+    .footer {
+        display: none;
+    }
+
+    @page {
+        size: A4 portrait;
+        padding: 10mm 15mm;
+    }
+}

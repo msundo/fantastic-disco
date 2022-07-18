@@ -1,0 +1,53 @@
+.FormLabel {
+  margin-bottom: 1.1rem;
+  width: 100%;
+  &_element {
+    font-weight: 600;
+    font-size: 1.6rem;
+    line-height: 2rem;
+    color: #0b2432;
+  }
+  &_tooltip {
+    &_icon {
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: white;
+      width: 2.6rem;
+      height: 2.6rem;
+      background-color: #417d1d;
+      border-radius: 50%;
+    }
+    &_content {
+      padding: 1.5rem 4rem 1.5rem 1.5rem;
+      box-shadow: 0px 0px 40px rgba(11, 36, 50, 0.3);
+      top: 50%;
+      font-size: 1.4rem;
+      line-height: 1.8rem;
+      color: #0b2432;
+      left: 5.5rem;
+      min-width: 36rem;
+      transform: translateY(-50%);
+      z-index: 99999;
+      background-color: #f4f4f4;
+      &_title {
+        font-weight: 700;
+        font-size: 1.4rem;
+        line-height: 1.8rem;
+        color: #0b2432;
+      }
+      &_close {
+        top: 1.5rem;
+        right: 1.5rem;
+        height: 1.6rem;
+        width: 1.6rem;
+      }
+      &_icon {
+        width: 2rem;
+        height: 2rem;
+        left: -1rem;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
+  }
+}

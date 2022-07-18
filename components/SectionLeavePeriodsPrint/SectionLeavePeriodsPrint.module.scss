@@ -1,0 +1,17 @@
+.SectionLeavePeriodsPrint {
+    display: none;
+    
+    @media print {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 1200px;
+        margin-bottom: 40px;
+    }
+
+    &_container {
+        font-size: 2.6rem;
+        font-weight: 500;
+        margin-bottom: 20px;
+    }
+}
