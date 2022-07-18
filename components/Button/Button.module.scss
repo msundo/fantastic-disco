@@ -5,6 +5,10 @@
   margin: 0 0.75rem;
   height: 5.5rem;
 
+  @media screen and (max-width: 768px) {
+    margin-bottom: 2rem;
+  }
+
   &:disabled {
     background-color: #767676;
     pointer-events: none;

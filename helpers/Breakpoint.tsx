@@ -4,7 +4,7 @@ const breakpoints = {
   sm: 480,
   md: 768,
   lg: 976,
-  xl: 1440,
+  xl: 1200,
 };
 
 const getDeviceSize = (width: number) => {

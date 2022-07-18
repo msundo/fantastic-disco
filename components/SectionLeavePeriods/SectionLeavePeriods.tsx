@@ -25,11 +25,10 @@ const dateLocale = {
 };
 
 type SectionAdviseProps = {
-  text: string
+  text: string;
 };
 
 const SectionAdvise: React.FC<SectionAdviseProps> = ({ text }) => {
-
   return (
     <div className='flex ml-4'>
       <div className={cn(css.SectionImportantInformation_circle)} />
@@ -38,8 +37,9 @@ const SectionAdvise: React.FC<SectionAdviseProps> = ({ text }) => {
   );
 };
 
-const SectionLeavePeriods: React.FC<Props> = ({ }) => {
-  const { nameOfMother, nameOfPartner, tasks, setDatePickerPopupVisible, setActiveTask, setDatePickerPopupPerson, leave, excludeAllTasksAvailableForSelected } = useAppState();
+const SectionLeavePeriods: React.FC<Props> = ({}) => {
+  const { nameOfMother, nameOfPartner, tasks, setDatePickerPopupVisible, setActiveTask, setDatePickerPopupPerson, leave, excludeAllTasksAvailableForSelected } =
+    useAppState();
 
   const pregnancyLeave = tasks.find((task) => task.periodeType === 'PregnancyLeave');
   const maternityLeave = tasks.find((task) => task.periodeType === 'MaternityLeave');
@@ -67,7 +67,6 @@ const SectionLeavePeriods: React.FC<Props> = ({ }) => {
   const handleEditTask = (task: Task) => {
     setActiveTask(task);
     setDatePickerPopupVisible(true);
-    setDatePickerPopupPerson(task.project);
   };
 
   const [motherCanAddLeave, setMotherCanAddLeave] = useState<boolean | null>(null);
@@ -78,24 +77,34 @@ const SectionLeavePeriods: React.FC<Props> = ({ }) => {
     setPartnerCanAddLeave(leave.remaining.partner > 0 || leave.remaining.shared > 0);
   }, [leave]);
 
+  const handleKeypressMother = (e) => {
+    //it triggers by pressing the enter key
+    if (e.charCode === 13) {
+      addLeaveForMother
+    }
+  };
+
+  const handleKeypressPartner = (e) => {
+    //it triggers by pressing the enter key
+    if (e.charCode === 13) {
+      addLeaveForPartner
+    }
+  };
+
   return (
     <>
       <div className={cn(s.EditPageSections_column, 'mb-10')}>
         <div className={cn(s.EditPageSections_columnHeading, 'mb-8')}>{nameOfMother}</div>
 
         <div className={cn(s.EditPageSections_screen, 'w-[90%] mb-12')}>
-          <p className='text-[1.4rem]'>
-            Som mor, der er lønmodtager, kan du søge om:
-          </p>
+          <p className='text-[1.4rem]'>Som mor, der er lønmodtager, kan du søge om:</p>
           <SectionAdvise text='4 ugers orlov med barselsdagpenge inden fødslen.' />
           <SectionAdvise text='2 ugers orlov lige efter fødslen.' />
           <SectionAdvise text='8 ugers orlov ved fødslen. Når de 2 ugers orlov slutter, fortsætter du over på de 8 ugers orlov. Orloven skal afholdes inden for de første 10 uger efter barnets fødsel. Du har mulighed for at forlænge orloven, hvis du genoptager arbejdet delvist efter aftale med din arbejdsgiver.' />
           <SectionAdvise text='9 ugers orlov. De 9 ugers orlov kan ikke overdrages til den anden forælder. Orloven skal holdes inden 1 år efter barnets fødsel, medmindre du pga. særlige forhold er forhindret i at holde orloven.' />
           <SectionAdvise text='5 ugers orlov. De 5 ugers orlov skal afholdes inden 1 år efter barnets fødsel. Du har dog mulighed for at forlænge eller udskyde ugerne frem til barnet fylder 9 år, hvis du opfylder betingelserne.' />
           <br />
-          <p className='text-[1.4rem]'>
-            Læs mere om barselsreglerne på www.borger.dk/barsel.
-          </p>
+          <p className='text-[1.4rem]'>Læs mere om barselsreglerne på www.borger.dk/barsel.</p>
         </div>
 
         {pregnancyLeave && (
@@ -109,7 +118,7 @@ const SectionLeavePeriods: React.FC<Props> = ({ }) => {
         )}
         {maternityLeave && (
           <EditItem
-            title={maternityLeave.taskTitle}
+            title={'2 ugers orlov lige efter fødslen - orlov kan ikke overdrages'}
             bodyText={maternityLeave.taskDescription}
             dates={`${intlFormat(maternityLeave.start, dateFormat, dateLocale)} til ${intlFormat(maternityLeave.end, dateFormat, dateLocale)}`}
             editType='disabled'
@@ -131,7 +140,7 @@ const SectionLeavePeriods: React.FC<Props> = ({ }) => {
               />
             );
           })}
-        <button className={s.InlineButton} disabled={!motherCanAddLeave} onClick={addLeaveForMother}>
+        <button tabIndex={1} onKeyPress={handleKeypressMother} className={s.InlineButton} disabled={!motherCanAddLeave} onClick={addLeaveForMother}>
           <Image src='/svgs/circle-plus.svg' alt='Tilføj orlovsperiode' width={22} height={22} />
           <span className={s.InlineButton_text}>Tilføj orlovsperiode</span>
         </button>
@@ -140,21 +149,17 @@ const SectionLeavePeriods: React.FC<Props> = ({ }) => {
         <div className={cn(s.EditPageSections_columnHeading, 'mb-8')}>{nameOfPartner}</div>
 
         <div className={cn(s.EditPageSections_screen, 'w-[90%] mb-12')}>
-          <p className='text-[1.4rem]'>
-            Som far/medmor, der er lønmodtager, kan du søge om:
-          </p>
+          <p className='text-[1.4rem]'>Som far/medmor, der er lønmodtager, kan du søge om:</p>
           <SectionAdvise text='2 ugers orlov ved fødslen, som du skal holde inden for de første 10 uger efter fødslen.' />
           <SectionAdvise text='9 ugers orlov. De 9 ugers orlov kan ikke overdrages til den anden forælder. Orloven skal holdes inden 1 år efter barnets fødsel, medmindre forælderen pga. særlige forhold er forhindret i at holde orloven.' />
           <SectionAdvise text=' 13 ugers orlov. De 13 ugers orlov skal afholdes inden 1 år efter barnets fødsel. Du har dog mulighed for at forlænge eller udskyde ugerne frem til barnet fylder 9 år, hvis du opfylder betingelserne.' />
           <br />
-          <p className='text-[1.4rem]'>
-            Læs mere om barselsreglerne på www.borger.dk/barsel.
-          </p>
+          <p className='text-[1.4rem]'>Læs mere om barselsreglerne på www.borger.dk/barsel.</p>
         </div>
 
         {paternityLeave && (
           <EditItem
-            title={paternityLeave.taskTitle}
+            title={'2 ugers orlov ved fødslen - orlov der ikke kan overdrages'}
             bodyText={paternityLeave.taskDescription}
             dates={`${intlFormat(paternityLeave.start, dateFormat, dateLocale)} til ${intlFormat(paternityLeave.end, dateFormat, dateLocale)}`}
             editType='edit'
@@ -176,7 +181,7 @@ const SectionLeavePeriods: React.FC<Props> = ({ }) => {
               />
             );
           })}
-        <button className={s.InlineButton} disabled={!partnerCanAddLeave} onClick={addLeaveForPartner}>
+        <button tabIndex={1} onKeyPress={handleKeypressPartner} className={s.InlineButton} disabled={!partnerCanAddLeave} onClick={addLeaveForPartner}>
           <Image src='/svgs/circle-plus.svg' alt='Tilføj orlovsperiode' width={22} height={22} />
           <span className={s.InlineButton_text}>Tilføj orlovsperiode</span>
         </button>

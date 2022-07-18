@@ -1,9 +1,6 @@
-import Header from '../Header';
 import classnames from 'classnames';
-import s from './Layout.module.scss';
-import Button from '../Button';
-import Link from 'next/link';
-import Image from 'next/image';
+import Header from '../Header';
+import Footer from '../Footer';
 import Popup from '../Popup';
 
 type Props = {
@@ -12,12 +9,13 @@ type Props = {
 
 const Layout = ({ children }: Props) => {
   return (
-    <>
+    <div className='flex flex-col h-[100%]'>
       <Header />
-      <main className={classnames('flex flex-col justify-center items-center pt-16 pl-4 pr-4')}>
+      <main className={classnames('flex flex-col justify-center items-center pt-16 pl-4 pr-4 pb-16')}>
         {children}
         <Popup></Popup>
       </main>
+      <Footer />
 
       {/* 
       //! TODO: activate siteimprove script by uncommenting the following code block 
@@ -35,7 +33,7 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(sz
 //--><!]]>`,
         }}
       ></script> */}
-    </>
+    </div>
   );
 };
 

@@ -54,7 +54,7 @@ const Step4: NextPage = () => {
         tooltipTitle='Er jeres barn ikke født endnu?'
         tooltipText='Er barnet ikke født endnu, skal I indtaste den forventede terminsdato. I skal dog være opmærksomme på, at hvis fødselsdatoen afviger fra terminsdatoen, skal I lave en ny plan. I skal være opmærksomme på, at I ikke kan benytte barselsplanlæggeren, hvis barnet bliver født før den 2. august 2022, da der gælder andre barselsregler.'
       />
-      <div className='text-center text-[18px] mt-[-3rem] mb-12'>
+      <div className='text-center ml-1 mr-1 text-[18px] mt-[-3rem] mb-12'>
         <p>
           Er barnet født før 2.august 2022 gælder en anden lovgivning.
           <br />
@@ -66,7 +66,8 @@ const Step4: NextPage = () => {
       {/* <div id='react-datepicker-wrapper'> */}
       <div className='mb-20 flex justify-center items-center' id='react-datepicker'>
         <DatePicker
-          className='border-2 border-solid rounded border-opacity-100 border-border-grey focus-visible:border-border-green outline-border-green p-4 text-xl'
+          className='border-2 border-solid rounded border-opacity-100 border-border-grey focus-visible:border-border-green outline-border-green p-6 text-[16px] font-semibold'
+          dateFormat='dd. MMMM yyyy'
           locale='da'
           startDate={null}
           shouldCloseOnSelect={true}

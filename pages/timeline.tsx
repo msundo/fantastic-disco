@@ -10,43 +10,42 @@ import Legend from '../components/Legend';
 import DatePickerPopup from '../components/DatePickerPopup';
 import SectionLeavePeriodsPrint from '../components/SectionLeavePeriodsPrint';
 import SectionPrintHeader from '../components/SectionPrintHeader';
+import GapInTimelineAlert from '../components/GapInTimelineAlert';
 
 const Timeline: NextPage = () => {
   const {
-     nameOfMother, 
-     nameOfPartner, 
-     tasks, 
-     setTasks, 
-     dateOfBirth, 
-     setActiveTask, 
-     setDatePickerPopupVisible, 
-     createDatesToExclude, 
-     excludeDatesInterval, 
-     activeTask, 
-     distribution, 
-     leave, 
-     setLeave, 
-     setDatePickerPopupPerson, 
-     updateLeaveOnEditTask, 
-     checkForGapsBetweenTasks,
-     gapInTimeline,
-     setStartAddVacation,
-  } =
-  useAppState();
-  
+    nameOfMother,
+    nameOfPartner,
+    tasks,
+    setTasks,
+    dateOfBirth,
+    setActiveTask,
+    setDatePickerPopupVisible,
+    createDatesToExclude,
+    excludeDatesInterval,
+    activeTask,
+    distribution,
+    leave,
+    setLeave,
+    setDatePickerPopupPerson,
+    updateLeaveOnEditTask,
+    checkForGapsBetweenTasks,
+    gapInTimeline,
+  } = useAppState();
+
   const { deviceWidth, breakpoints } = useBreakpoint();
 
+  // Gantt Timeline width calculation
   const ganttColumnWidthRef = useRef(90);
-
   useEffect(() => {
-    if (deviceWidth >= breakpoints['lg']) ganttColumnWidthRef.current = 90;
-    else if (deviceWidth < breakpoints['lg'] && deviceWidth >= breakpoints['md']) ganttColumnWidthRef.current = 59;
-    else if (deviceWidth < breakpoints['md'] && deviceWidth >= breakpoints['sm']) ganttColumnWidthRef.current = 36;
-    else ganttColumnWidthRef.current = 24;
+    if (deviceWidth >= breakpoints['xl']) ganttColumnWidthRef.current = 90;
+    else {
+      ganttColumnWidthRef.current = Math.floor((window.innerWidth - 40) / 13);
+    }
   }, [breakpoints, deviceWidth]);
 
+  // Check for gaps in timeline
   useEffect(() => {
-    // Check for gap
     checkForGapsBetweenTasks(tasks);
   }, [tasks]);
 
@@ -59,12 +58,9 @@ const Timeline: NextPage = () => {
 
   const handleEditTask = (task: Task) => {
     setActiveTask(task);
-    // createDatesToExclude(task);
-    if(task.periodeType === 'Vacation') {
-      setStartAddVacation(true);
-    }
     setDatePickerPopupVisible(true);
     setDatePickerPopupPerson(task.project);
+    // createDatesToExclude(task);
   };
 
   useEffect(() => {
@@ -83,7 +79,6 @@ const Timeline: NextPage = () => {
       tasks = createTimelineForSharedAmount(moment(dateOfBirth), handleEditTask) as Task[];
     }
     setTasks(tasks);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dateOfBirth, setTasks]);
 
   const handleTaskChange = (task: Task) => {
@@ -91,35 +86,48 @@ const Timeline: NextPage = () => {
     setTasks(newTasks);
   };
 
+  useEffect(() => {
+    const unloadCallback = (event) => {
+      event.preventDefault();
+      event.returnValue = '';
+      return '';
+    };
+
+    window.addEventListener('beforeunload', unloadCallback);
+    return () => window.removeEventListener('beforeunload', unloadCallback);
+  }, []);
+
   return (
     <>
       {/* Only visible during a print */}
       <SectionPrintHeader />
       <SectionLeavePeriodsPrint />
 
-      <div className='flex'>
-
+      {/* TODO: Enable for names left of timeline? */}
+      {/* <div className='flex'>
         <div className='flex flex-col' style={{ justifyContent: 'space-evenly', marginBottom: '7rem', marginRight: '20px' }}>
-          <p className='center' style={{ fontSize: '2rem', fontWeight: 700 }}>{nameOfMother}</p>
-          <p className='center' style={{ fontSize: '2rem', fontWeight: 700 }}>{nameOfPartner}</p>
-        </div>
+          <p className='center' style={{ fontSize: '2rem', fontWeight: 700 }}>
+            {nameOfMother}
+          </p>
+          <p className='center' style={{ fontSize: '2rem', fontWeight: 700 }}>
+            {nameOfPartner}
+          </p>
+        </div> */}
 
-        <Gantt
-          onDateChange={handleTaskChange}
-          fontFamily={'Inter'}
-          tasks={tasks}
-          columnWidth={ganttColumnWidthRef.current}
-          listCellWidth={''}
-          viewMode={ViewMode.Month}
-          locale='dan'
-        />
-
-      </div>
-
+      <Gantt
+        onDateChange={handleTaskChange}
+        fontFamily={'Inter'}
+        tasks={tasks}
+        columnWidth={ganttColumnWidthRef.current}
+        listCellWidth={''}
+        viewMode={ViewMode.Month}
+        locale='dan'
+      />
+      {/* </div> */}
 
       {/*  TODO: move colors to state - we need them in the datepicker as well */}
       <Legend partnerColor={'#2171B5'} motherColor={'#084081'} vacationColor={'#AE017E'}></Legend>
-      <div>There is a gap in timeline: {gapInTimeline ? 'YES' : 'NO'}</div>
+      {gapInTimeline && <GapInTimelineAlert />}
       <DatePickerPopup />
       <EditPageSections />
     </>

@@ -1,12 +1,20 @@
 .FormLabel {
   margin-bottom: 1.1rem;
   width: 100%;
+
+  &_mobile {
+    @media screen and (max-width: 768px) {
+      font-size: 2.8rem;
+    }
+  }
+
   &_element {
     font-weight: 600;
     font-size: 1.6rem;
     line-height: 2rem;
     color: #0b2432;
   }
+
   &_tooltip {
     &_icon {
       font-weight: 700;
@@ -17,6 +25,7 @@
       background-color: #417d1d;
       border-radius: 50%;
     }
+
     &_content {
       padding: 1.5rem 4rem 1.5rem 1.5rem;
       box-shadow: 0px 0px 40px rgba(11, 36, 50, 0.3);
@@ -29,24 +38,38 @@
       transform: translateY(-50%);
       z-index: 99999;
       background-color: #f4f4f4;
+
+      @media screen and (max-width: 768px) {
+        min-width: 18rem;
+        max-width: 26rem;
+        right: 5.5rem;
+        top: 50%;
+      }
+
       &_title {
         font-weight: 700;
         font-size: 1.4rem;
         line-height: 1.8rem;
         color: #0b2432;
       }
+
       &_close {
         top: 1.5rem;
         right: 1.5rem;
         height: 1.6rem;
         width: 1.6rem;
       }
+
       &_icon {
         width: 2rem;
         height: 2rem;
         left: -1rem;
         top: 50%;
         transform: translateY(-50%);
+
+        @media screen and (max-width: 768px) {
+          left: 0;
+        }
       }
     }
   }

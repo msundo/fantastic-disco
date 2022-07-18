@@ -1,11 +1,15 @@
 .FormSelect {
-    &_element {
-        min-width:36rem;
-        padding: 1.6rem;
-        font-family:var(--font-secondary);
-        font-size:1.6rem;
-        line-height:2.2rem;
-        color:#0B2432;
 
+    &_element {
+        min-width: 36rem;
+        padding: 1.6rem;
+        font-family: var(--font-secondary);
+        font-size: 1.6rem;
+        line-height: 2.2rem;
+        color: #0b2432;
+
+        @media screen and (max-width: 768px) {
+            min-width: 28rem;
+        }
     }
 }

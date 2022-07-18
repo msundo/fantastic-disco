@@ -16,10 +16,12 @@ type Props = {
 };
 
 const RadioButtonGroup: React.FC<Props> = ({ buttonArray, name, type = 'wide', clickHandler }: Props) => {
+  
   const [currentValue, setCurrentValue] = useState('');
-  const changeHandler = (event) => {
-    clickHandler(event.target.value);
-    setCurrentValue(event.target.value);
+
+  const changeHandler = (value) => {
+    clickHandler(value);
+    setCurrentValue(value);
   };
 
   return (

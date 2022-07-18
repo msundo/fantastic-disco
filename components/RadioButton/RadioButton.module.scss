@@ -1,11 +1,16 @@
 .RadioButton {
-    font-size:1.6rem;
-    line-height:2.2rem;
-    padding:1.6rem 0;
-    color:#0B2432;
-    margin-bottom:.8rem;
+    font-size: 1.6rem;
+    line-height: 2.2rem;
+    padding: 1.6rem 0;
+    color: #0b2432;
+    margin-bottom: 0.8rem;
+
+    @media screen and (max-width: 768px) {
+        max-width: 28rem;
+    }
+
     &Checked {
-        border-color:#44831E;
-        font-weight:600;
+        border-color: #44831e;
+        font-weight: 600;
     }
 }

@@ -12,12 +12,21 @@ type Props = {
 const FormLabel: React.FC<Props> = ({ labelText, tooltipTitle, tooltipText }) => {
   const [isTooltipVisible, setIsTooltipVisible] = useState<boolean>(false);
 
+  const handleKeypress = (e) => {
+    //it triggers by pressing the enter key
+    if (e.charCode === 13) {
+      setIsTooltipVisible(!isTooltipVisible)
+    }
+  };
+
   return (
     <div className={cn(s.FormLabel, 'flex justify-between items-center w-full')}>
       <p className={cn(s.FormLabel_element)}>{labelText}</p>
       {tooltipText || tooltipTitle ? (
         <div className={cn(s.FormLabel_tooltip, 'sm:relative')}>
           <span
+            tabIndex={1}
+            onKeyPress={handleKeypress}
             className={cn(s.FormLabel_tooltip_icon, 'flex justify-center items-center cursor-pointer')}
             onClick={() => setIsTooltipVisible(!isTooltipVisible)}
           >

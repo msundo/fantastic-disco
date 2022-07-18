@@ -1,13 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500;600;700&display=swap');
-@import '../gantt/dist/index.css';
-@import './print.scss';
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500;600;700&display=swap");
+@import "../gantt/dist/index.css";
+@import "./print.scss";
 
 :root {
-  --font-primary: 'Inter', sans-serif;
-  --font-secondary: 'Open Sans', sans-serif;
+  --font-primary: "Inter", sans-serif;
+  --font-secondary: "Open Sans", sans-serif;
+}
+#__next {
+  height: 100%;
 }
 
 html,
@@ -17,6 +20,7 @@ body {
   font-size: 10px;
   font-family: var(--font-primary);
   color: #0b2432;
+  height: 100%;
 }
 
 a {

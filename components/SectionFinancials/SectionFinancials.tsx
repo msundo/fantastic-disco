@@ -7,12 +7,12 @@ import { useCalculateLeave } from '../../helpers/calculateLeave';
 import { getWeeksAndDays } from '../../helpers/formatters';
 
 const SectionFinancials: React.FC<Props> = ({ }) => {
-  const { nameOfMother, nameOfPartner, motherBusinessDaysWithFullPay, partnerBusinessDaysWithFullPay } = useAppState();
+  const { nameOfMother, nameOfPartner, motherWeeksWithFullPay, partnerWeeksWithFullPay } = useAppState();
 
   const { calculatedLeave } = useCalculateLeave();
 
-  const motherDaysWithFullPay = motherBusinessDaysWithFullPay * 5;
-  const partnerDaysWithFullPay = partnerBusinessDaysWithFullPay * 5;
+  const motherDaysWithFullPay = motherWeeksWithFullPay * 5;
+  const partnerDaysWithFullPay = partnerWeeksWithFullPay * 5;
 
   const motherDaysWithoutFullPay = calculatedLeave?.mother?.totalDays - motherDaysWithFullPay;
   const partnerDaysWithoutFullPay = calculatedLeave?.partner?.totalDays - partnerDaysWithFullPay;

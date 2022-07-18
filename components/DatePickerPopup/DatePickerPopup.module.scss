@@ -2,6 +2,14 @@
   &_container {
     box-shadow: 4px 4px 36px 10px rgba(11, 36, 50, 0.5);
     padding: 4rem 2rem 2rem;
+
+    @media screen and (max-width: 768px) {
+      overflow: scroll;
+      padding-left: 4rem;
+      padding-right: 4rem;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
    
     &_title {
       margin-bottom: 3rem;
@@ -9,6 +17,12 @@
       font-weight: 600;
       font-size: 3rem;
       color: #0B2432;
+
+      @media screen and (max-width: 768px) {
+        margin-bottom: 1rem;
+        font-weight: 500;
+        font-size: 2rem;
+      }
     }
     &_text {
       font-size: 1.6rem;
@@ -40,6 +54,10 @@
       margin-top: 2.5rem;
       margin-bottom: 0.5rem;
       justify-content: center;
+
+      @media screen and (max-width: 768px) {
+        margin-top: 0rem;
+      }
   
       &:before {
         content: url('/svgs/trash.svg');

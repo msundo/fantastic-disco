@@ -4,7 +4,6 @@ const texts = {
     previous: 'Tilbage',
   },
   step0: {
-    heading: 'yadiyada',
     popup: {
       title: 'Behandling af personoplysninger',
       message:
@@ -13,7 +12,6 @@ const texts = {
     },
   },
   step1: {
-    heading: 'yadiyada',
     popup: {
       title: 'Du kan ikke benytte barselsplanlæggeren',
       message:
@@ -24,7 +22,6 @@ const texts = {
     },
   },
   step2: {
-    heading: 'yadiyada',
     popup: {
       title: 'Du kan ikke benytte barselsplanlæggeren',
       message:
@@ -37,7 +34,7 @@ const texts = {
   // TODO: Different text for different scenarios
   selfEmployed: {
     popup: {
-      title: 'selfEmployed-Du kan ikke benytte barselsplanlæggeren',
+      title: 'Du kan ikke benytte barselsplanlæggeren',
       message:
         'Hvis du eller barnets anden forælder har en anden beskæftigelse eller situation end lønmodtager, kan I ikke benytte barselsplanlæggeren. Du kan gå til borger.dk/barsel-selvstaendig, hvor du kan læse mere om din situation.',
       acceptButtonText: 'Læs mere på borger.dk',
@@ -47,7 +44,7 @@ const texts = {
   },
   student: {
     popup: {
-      title: 'student-Du kan ikke benytte barselsplanlæggeren',
+      title: 'Du kan ikke benytte barselsplanlæggeren',
       message:
         'Hvis du eller barnets anden forælder har en anden beskæftigelse eller situation end lønmodtager, kan I ikke benytte barselsplanlæggeren. Du kan gå til borger.dk/barsel-studerende-og-nyuddannet, hvor du kan læse mere om din situation.',
       acceptButtonText: 'Læs mere på borger.dk',

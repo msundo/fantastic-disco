@@ -7,6 +7,10 @@
   flex: 1 1 auto;
   width: 90%;
 
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
+
   &_section {
     border-top: 2px solid #ebedf0;
     padding: 4.3rem 0;

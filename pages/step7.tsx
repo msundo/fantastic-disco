@@ -15,19 +15,17 @@ import FormLabel from '../components/FormLabel';
 */
 
 const Step7: NextPage = () => {
-  const { motherBusinessDaysWithFullPay, setMotherBusinessDaysWithFullPay, setConvertedMotherBusinessDaysWithFullPay, nameOfMother } = useAppState();
+  const { motherWeeksWithFullPay, setMotherWeeksWithFullPay, nameOfMother } = useAppState();
   const router = useRouter();
 
-  // min/max values for motherBusinessDaysWithFullPay
+  // min/max values for motherWeeksWithFullPay
   const min = 0;
   const max = 48;
 
   const changeHandler = (value: string) => {
     // return number closest to min/max if value is outside of range
     const validatedValue = Math.max(min, Math.min(max, Number(value)));
-    const convertToBusinessDays = validatedValue * 5;
-    setMotherBusinessDaysWithFullPay(validatedValue);
-    setConvertedMotherBusinessDaysWithFullPay(convertToBusinessDays);
+    setMotherWeeksWithFullPay(validatedValue);
   };
 
   return (
@@ -44,11 +42,11 @@ const Step7: NextPage = () => {
           tooltipText='Om I får løn under orloven, har betydning for jeres økonomi, og hvornår I skal søge om barselsdagpenge. Hvis I ikke ved, om I får løn under orloven, kan I undersøge dette med jeres fagforeninger eller arbejdsgivere.'
         />
         <input
-          className='text-2xl border-2 border-solid rounded border-opacity-100 border-border-grey focus-visible:border-border-green outline-border-green p-4 w-[36rem]'
+          className='text-2xl border-2 border-solid rounded border-opacity-100 border-border-grey focus-visible:border-border-green outline-border-green p-4 w-[28rem] md:w-[36rem]'
           type='number'
           min='0'
           max='48'
-          value={motherBusinessDaysWithFullPay}
+          value={motherWeeksWithFullPay}
           onChange={(e) => changeHandler(e.target.value)}
         />
       </div>

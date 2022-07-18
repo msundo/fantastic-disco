@@ -2,39 +2,39 @@
   order: 1;
 
   @media print {
-    order: 6;
+    order: 7;
   }
 }
 
 .vacation {
-  order: 2;
+  order: 3;
+
+  @media print {
+    order: 6;
+  }
+}
+
+.leave_total {
+  order: 5;
 
   @media print {
     order: 5;
   }
 }
 
-.leave_total {
-  order: 3;
-
-  @media print {
-    order: 4;
-  }
-}
-
 .leave_transfer {
-  order: 4;
+  order: 2;
 
   @media print {
-    order: 2;
+    order: 3;
   }
 }
 
 .financials {
-  order: 5;
+  order: 4;
 
   @media print {
-    order: 3;
+    order: 4;
   }
 }
 
@@ -49,6 +49,15 @@
 .remaining_leave {
   @media print {
     display: none;
+  }
+}
+
+.remaining_leave_print {
+  display: none;
+
+  @media print {
+    display: block;
+    order: 2;
   }
 }
 

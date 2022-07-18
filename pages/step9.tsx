@@ -53,7 +53,7 @@ const Step9: NextPage = () => {
         </p>
       </div>
 
-      <div className='mb-20'>
+      <div className='mb-20 flex flex-col'>
         <FormLabel
           labelText={'Fordeling'}
           tooltipTitle='Hvad betyder det?'

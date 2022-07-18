@@ -40,8 +40,8 @@ const Step3: NextPage = () => {
       />
 
       <div className='mb-20 flex justify-center items-center flex-wrap'>
-        <TextInput label='Indtast mors navn' value={nameOfMother} changeHandler={setNameOfMother} />
-        <TextInput label='Indtast far/medmors navn' value={nameOfPartner} changeHandler={setNameOfPartner} />
+        <TextInput label='Indtast mors navn' ariaLabel="Mors navn" value={nameOfMother} changeHandler={setNameOfMother} />
+        <TextInput label='Indtast far/medmors navn' ariaLabel="far/medmors navn" value={nameOfPartner} changeHandler={setNameOfPartner} />
       </div>
 
       <div className={classNames('flex justify-center items-center')}>

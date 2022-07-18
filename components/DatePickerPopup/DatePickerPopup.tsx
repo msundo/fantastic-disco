@@ -17,10 +17,9 @@ import TextInput from '../TextInput';
 
 registerLocale('da', da);
 
-import { createTaskForPartner, createTaskForMother, createVacationForPartner, createVacationForMother } from '../../helpers/helpers';
+import { createTaskForPartner, createTaskForMother } from '../../helpers/helpers';
 import getDay from 'date-fns/getDay';
 import { addBusinessDays, addWeeks, closestTo, differenceInBusinessDays, subBusinessDays } from 'date-fns';
-import { Project } from '../../gantt/dist/components/task-item/project/project';
 
 const dateFormat = {
   year: 'numeric',
@@ -55,11 +54,6 @@ const DatePickerPopup: React.FC = () => {
     updateLeaveOnEditTask,
     resetLocalLeave,
     checkForGapsBetweenTasks,
-    startAddVacation,
-    setStartAddVacation,
-    updateLocalVacation,
-    resetLocalVacation,
-    localVacation,
   } = useAppState();
 
   // TODO: When editing a task, we need to take the existing leave on the task into account when reducing remaining leave.
@@ -87,27 +81,20 @@ const DatePickerPopup: React.FC = () => {
       createDatesToExclude(activeTask);
       updateCurrentTaskBusinessDays(activeTask);
       updateLeaveOnEditTask(activeTask);
-      if(activeTask.periodeType === 'VacationMother' || activeTask.periodeType === 'VacationPartner') {
-        updateLocalVacation(activeTask);
-      }
     } else {
       resetLocalLeave();
-      resetLocalVacation();
       setDateRange([null, null]);
-    };
+    }
   }, [activeTask]);
 
   useEffect(() => {
-    console.log("STATE UPDATE: ", leave);
+    console.log('STATE UPDATE: ', leave);
   }, [leave, setLeave]);
 
   const handleEditTask = (task: Task) => {
     setActiveTask(task);
     setDatePickerPopupVisible(true);
     setDatePickerPopupPerson(task.project);
-    if(task.periodeType === 'Vacation') {
-      setStartAddVacation(true);
-    }
   };
 
   const changeDateIntervals = (dateRange) => {
@@ -115,27 +102,19 @@ const DatePickerPopup: React.FC = () => {
       setIncludeIntervals(null);
       return;
     }
-    let maxDate;
-    const nextTask = findNextAvailableTask(dateRange[0], datePickerPopupPerson);
-    if(startAddVacation) {
-      const potentialMaxDate = addWeeks(dateOfBirth, 48);
-      if(nextTask) {
-        const datesArray = [subBusinessDays(nextTask.start, 1), potentialMaxDate];
-        maxDate = closestTo(dateRange[0], datesArray);
-      } else {
-        maxDate = potentialMaxDate;
-      }
-    } else {
-      const potentialMaxDate = addBusinessDays(dateRange[0], leave.remaining[datePickerPopupPerson] + leave.remaining.shared + localLeave[datePickerPopupPerson] + localLeave.shared);
-      if(nextTask) {
-        const datesArray = [subBusinessDays(nextTask.start, 1), potentialMaxDate];
-        maxDate = closestTo(dateRange[0], datesArray);
-      } else {
-        maxDate = potentialMaxDate;
-      }
-    }
     //* Calculate available leave based on remaining leave in state
-
+    const nextTask = findNextAvailableTask(dateRange[0], datePickerPopupPerson);
+    const potentialMaxDate = addBusinessDays(
+      dateRange[0],
+      leave.remaining[datePickerPopupPerson] + leave.remaining.shared + localLeave[datePickerPopupPerson] + localLeave.shared
+    );
+    let maxDate;
+    if (nextTask) {
+      const datesArray = [subBusinessDays(nextTask.start, 1), potentialMaxDate];
+      maxDate = closestTo(dateRange[0], datesArray);
+    } else {
+      maxDate = potentialMaxDate;
+    }
     const datesToInclude: { start: Date; end: Date }[] | undefined = [];
     datesToInclude.push({ start: dateRange[0], end: maxDate });
     setIncludeIntervals(datesToInclude);
@@ -155,54 +134,9 @@ const DatePickerPopup: React.FC = () => {
    */
   const applyDates = () => {
     const calculateBusinessDays = differenceInBusinessDays(endDate, startDate) + 1;
-    if(startAddVacation) {
-      if(activeTask) {
-        const taskId = activeTask?.id;
-        const activeTaskIndex = tasks.findIndex((t) => t.id === taskId);
-        let newTasks = [...tasks];
-        newTasks[activeTaskIndex] = {
-          ...newTasks[activeTaskIndex],
-          start: startDate,
-          end: endDate,
-        };
-        setTasks(newTasks);
-      } else {
-        if(datePickerPopupPerson === 'mother') {
-          const task = createVacationForMother(
-            startDate,
-            endDate,
-            0,
-            0,
-            0,
-            nameOfMother,
-            false,
-            handleEditTask
-          );
-          const newTasks = [...tasks, task];
-          setTasks(newTasks);
-        } else if(datePickerPopupPerson === 'partner') {
-          const task = createVacationForPartner(
-            startDate,
-            endDate,
-            0,
-            0,
-            0,
-            nameOfPartner,
-            false,
-            handleEditTask
-          );
-          const newTasks = [...tasks, task];
-          setTasks(newTasks);
-        }
-    }
-      setActiveTask(null);
-      setDateRange([]); //TODO: dateRange could be set to start after current endDate?
-      setNotificationType(activeTask ? 'success' : 'addLeaveSuccess'); // if adding new leave, set to addLeaveSuccess
-      setStartAddVacation(false);
-      return;
-    }
-
-    const remainingIndividualDays = activeTask ? leave.remaining[datePickerPopupPerson] + localLeave[datePickerPopupPerson] : leave.remaining[datePickerPopupPerson];
+    const remainingIndividualDays = activeTask
+      ? leave.remaining[datePickerPopupPerson] + localLeave[datePickerPopupPerson]
+      : leave.remaining[datePickerPopupPerson];
     const remainingSharedDays = activeTask ? leave.remaining.shared + localLeave.shared : leave.remaining.shared;
 
     let individualDaysReducer = remainingIndividualDays;
@@ -231,12 +165,10 @@ const DatePickerPopup: React.FC = () => {
     };
     setLeave(newLeave);
 
-    // TODO: pass person
-    // TODO: if updating a task uses from individual + shared days, we need to split it
     if (activeTask) {
       const taskId = activeTask?.id;
       const activeTaskIndex = tasks.findIndex((t) => t.id === taskId);
-      if(taskShouldSplit) {
+      if (taskShouldSplit) {
         tasks.splice(activeTaskIndex, 1);
         let addLeavePeriod = [];
         if (datePickerPopupPerson === 'mother') {
@@ -305,9 +237,9 @@ const DatePickerPopup: React.FC = () => {
         const newTasks = [...tasks, ...addLeavePeriod];
         setTasks(newTasks);
       } else {
-        const sharedDays = activeTask.sharedDays > 0 ? activeTask.sharedDays = calculateBusinessDays : 0;
-        const motherIndividualDays = activeTask.motherIndividualDays > 0 ? activeTask.motherIndividualDays = calculateBusinessDays : 0;
-        const partnerIndividualDays = activeTask.partnerIndividualDays > 0 ? activeTask.partnerIndividualDays = calculateBusinessDays : 0;
+        const sharedDays = activeTask.sharedDays > 0 ? (activeTask.sharedDays = calculateBusinessDays) : 0;
+        const motherIndividualDays = activeTask.motherIndividualDays > 0 ? (activeTask.motherIndividualDays = calculateBusinessDays) : 0;
+        const partnerIndividualDays = activeTask.partnerIndividualDays > 0 ? (activeTask.partnerIndividualDays = calculateBusinessDays) : 0;
         let newTasks = [...tasks];
         newTasks[activeTaskIndex] = {
           ...newTasks[activeTaskIndex],
@@ -317,6 +249,7 @@ const DatePickerPopup: React.FC = () => {
           motherIndividualDays: motherIndividualDays,
           partnerIndividualDays: partnerIndividualDays,
         };
+        console.log(newTasks[activeTaskIndex]);
         setTasks(newTasks);
       }
     } else {
@@ -428,14 +361,13 @@ const DatePickerPopup: React.FC = () => {
     setActiveTask(null);
     setDatePickerPopupVisible(false);
     setNotificationIsVisible(false);
-    setStartAddVacation(false);
   };
 
   const closePopup = () => {
     setActiveTask(null);
     setDateRange([]);
     setDatePickerPopupVisible(false);
-    if(activeTask) {
+    if (activeTask) {
       const newLeave = {
         ...leave,
         remaining: {
@@ -446,9 +378,6 @@ const DatePickerPopup: React.FC = () => {
       };
       setLeave(newLeave);
     }
-    if(startAddVacation) {
-      setStartAddVacation(false);
-    }
   };
 
   const rejectChanges = () => {
@@ -456,59 +385,91 @@ const DatePickerPopup: React.FC = () => {
     setNotificationIsVisible(false);
   };
 
+  console.log('includeIntervals', includeIntervals);
+
   return (
     <>
-      <div className={classnames(s.DatePickerPopup, datePickerPopupVisible ? '' : 'hidden', 'fixed top-0 left-0 right-0 bottom-0 z-50 w-[100vw] h-[100vh]')}>
+      <div
+        className={classnames(s.DatePickerPopup, datePickerPopupVisible ? '' : 'hidden', 'fixed top-0 left-0 right-0 bottom-0 z-50 w-[100vw] overflow-auto')}
+      >
         <div className={classnames('w-full h-full bg-[#0B2432] bg-opacity-25 flex justify-center')}>
           <div className={classnames(s.DatePickerPopup_container, 'bg-[#F4F4F4] relative flex flex-col justify-center items-center mt-auto mb-auto')}>
-            <h2 className={classnames(s.DatePickerPopup_container_title, 'text-4xl text-center')}>Tilpas orlovsperiode</h2>
+            <h2 role='heading' className={classnames(s.DatePickerPopup_container_title, 'text-4xl text-center')}>
+              {activeTask?.periodeType === 'PaternityLeave' ? 'Vælg startdato for orlovsperiode' : 'Tilpas orlovsperiode'}
+            </h2>
 
-            <div className={'flex justify-center mb-12'}>
+            <div className={'flex justify-center mb-0 md:mb-12'}>
               <TextInput
                 value={
                   startDate
                     ? `${intlFormat(startDate, dateFormat, dateLocale)} - ${endDate ? intlFormat(endDate, dateFormat, dateLocale) : ''}`
                     : 'Vælg start og slut dato'
                 }
+                ariaLabel='Datoer for orlov'
                 label={''}
+                classNames='text-center w-[24rem]'
                 changeHandler={() => {}}
               />
             </div>
 
             <div id='react-datepicker-wrapper'>
               <div id='react-datepicker'>
-                <DatePicker
-                  inline
-                  className='border-2 border-solid rounded border-opacity-100 border-border-grey focus-visible:border-border-green outline-border-green p-4 text-xl'
-                  locale='da'
-                  selectsRange={true}
-                  startDate={startDate}
-                  endDate={endDate}
-                  shouldCloseOnSelect={false}
-                  selected={startDate}
-                  formatWeekDay={(nameOfDay) => nameOfDay.substr(0, 1)}
-                  onChange={(dateRange) => {
-                    setDateRange(dateRange);
-                    changeDateIntervals(dateRange);
-                  }}
-                  filterDate={isWeekday}
-                  popperPlacement='bottom'
-                  minDate={dateOfBirth}
-                  includeDateIntervals={includeIntervals ? includeIntervals : undefined}
-                  excludeDateIntervals={excludeDatesInterval}
-                  // maxDate={addDays(new Date(), 110)}
-                  maxDate={addWeeks(dateOfBirth, 48)}
-                  monthsShown={2}
-                  placeholderText='Vælg start og slut dato'
-                />
+                {activeTask?.periodeType === 'PaternityLeave' ? (
+                  <DatePicker
+                    inline
+                    className='border-2 border-solid rounded border-opacity-100 border-border-grey focus-visible:border-border-green outline-border-green p-4 text-xl'
+                    locale='da'
+                    selectsRange={false}
+                    startDate={startDate}
+                    shouldCloseOnSelect={false}
+                    selected={startDate}
+                    formatWeekDay={(nameOfDay) => nameOfDay.substr(0, 1)}
+                    onChange={(date) => {
+                      setDateRange([date, addBusinessDays(date, 10)]);
+                    }}
+                    filterDate={isWeekday}
+                    popperPlacement='bottom'
+                    minDate={dateOfBirth}
+                    maxDate={addBusinessDays(dateOfBirth, 40)}
+                    monthsShown={2}
+                    placeholderText='Vælg start dato'
+                  />
+                ) : (
+                  <DatePicker
+                    inline
+                    className='border-2 border-solid rounded border-opacity-100 border-border-grey focus-visible:border-border-green outline-border-green p-4 text-xl'
+                    locale='da'
+                    selectsRange={true}
+                    startDate={startDate}
+                    endDate={endDate}
+                    shouldCloseOnSelect={false}
+                    selected={startDate}
+                    formatWeekDay={(nameOfDay) => nameOfDay.substr(0, 1)}
+                    onChange={(dateRange) => {
+                      setDateRange(dateRange);
+                      changeDateIntervals(dateRange);
+                    }}
+                    filterDate={isWeekday}
+                    popperPlacement='bottom'
+                    minDate={dateOfBirth}
+                    includeDateIntervals={includeIntervals ? includeIntervals : undefined}
+                    excludeDateIntervals={excludeDatesInterval}
+                    // maxDate={addDays(new Date(), 110)}
+                    maxDate={addWeeks(dateOfBirth, 48)}
+                    monthsShown={2}
+                    placeholderText='Vælg start og slut dato'
+                  />
+                )}
               </div>
 
               <div className={classnames(s.DatePickerPopup_container_buttons, 'w-full mt-6')}>
                 <Button type={'primary'} text={'Gem'} clickHandler={savePeriod} classNames={'mt-2'} />
 
-                <button className={classnames(s.DatePickerPopup_container_iconText)} onClick={() => removeLeave()}>
-                  Slet orlovsperiode
-                </button>
+                {!activeTask || activeTask?.periodeType !== 'PaternityLeave' ? (
+                  <button className={classnames(s.DatePickerPopup_container_iconText)} onClick={() => removeLeave()}>
+                    Slet orlovsperiode
+                  </button>
+                ) : null}
               </div>
             </div>
 

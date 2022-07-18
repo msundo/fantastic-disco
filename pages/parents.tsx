@@ -19,9 +19,9 @@ const Parents: NextPage = () => {
         <h2>state date: {date}</h2>
         <h2>state name: {nameOfMother}</h2>
         <br />
-        <input placeholder='Date' type='date' className='mt-4' onChange={(event) => updateDate(event.target.value)} />
+        <input aria-label='date' placeholder='Date' type='date' className='mt-4' onChange={(event) => updateDate(event.target.value)} />
         <br />
-        <input placeholder='Name of mother' type='text' className='mt-4' onChange={(event) => updateNameOfMother(event.target.value)} />
+        <input aria-label='name of mother' placeholder='Name of mother' type='text' className='mt-4' onChange={(event) => updateNameOfMother(event.target.value)} />
       </main>
 
       <footer></footer>

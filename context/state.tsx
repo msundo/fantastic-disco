@@ -29,8 +29,8 @@ type ValidationType = {
   livingTogether: boolean;
   motherOccupationalStatus: string;
   partnerOccupationalStatus: string;
-  motherBusinessDaysWithFullPay: number;
-  partnerBusinessDaysWithFullPay: number;
+  motherWeeksWithFullPay: number;
+  partnerWeeksWithFullPay: number;
   distribution: 'mother' | 'partner' | 'equal' | '';
 };
 type LeaveType = {
@@ -54,10 +54,6 @@ type LocalLeaveType = {
   partner: number;
   shared: number;
 };
-type LocalVacationType = {
-    mother: number;
-    partner: number;
-};
 
 type appContextType = {
   dateOfBirth: Date | null;
@@ -70,10 +66,10 @@ type appContextType = {
   partnerOccupationalStatus: string;
   setMotherOccupationalStatus: (value: string) => void;
   setPartnerOccupationalStatus: (value: string) => void;
-  motherBusinessDaysWithFullPay: number;
-  partnerBusinessDaysWithFullPay: number;
-  setMotherBusinessDaysWithFullPay: (value: number) => void;
-  setPartnerBusinessDaysWithFullPay: (value: number) => void;
+  motherWeeksWithFullPay: number;
+  partnerWeeksWithFullPay: number;
+  setMotherWeeksWithFullPay: (value: number) => void;
+  setPartnerWeeksWithFullPay: (value: number) => void;
   distribution: string;
   setDistribution: (value: string) => void;
   popupContext: PopupContext;
@@ -105,12 +101,6 @@ type appContextType = {
   checkForGapsBetweenTasks: (tasks: Task[]) => void;
   gapInTimeline: boolean;
   setGapInTimeline: (value: boolean) => void;
-  startAddVacation: boolean;
-  setStartAddVacation: (value: boolean) => void;
-  localVacation: LocalVacationType;
-  setLocalVacation: (value: LocalVacationType) => void;
-  resetLocalVacation: () => void;
-  updateLocalVacation: (task: Task) => void;
 };
 
 const appContextDefaultValues: appContextType = {
@@ -124,10 +114,10 @@ const appContextDefaultValues: appContextType = {
   partnerOccupationalStatus: '',
   setMotherOccupationalStatus: (value: string) => {},
   setPartnerOccupationalStatus: (value: string) => {},
-  motherBusinessDaysWithFullPay: 0,
-  partnerBusinessDaysWithFullPay: 0,
-  setMotherBusinessDaysWithFullPay: (value: number) => {},
-  setPartnerBusinessDaysWithFullPay: (value: number) => {},
+  motherWeeksWithFullPay: 0,
+  partnerWeeksWithFullPay: 0,
+  setMotherWeeksWithFullPay: (value: number) => {},
+  setPartnerWeeksWithFullPay: (value: number) => {},
   popupContext: {
     step: '',
     onAccept: () => {},
@@ -145,8 +135,8 @@ const appContextDefaultValues: appContextType = {
     livingTogether: true,
     motherOccupationalStatus: 'lønmodtager',
     partnerOccupationalStatus: 'lønmodtager',
-    motherBusinessDaysWithFullPay: 0,
-    partnerBusinessDaysWithFullPay: 0,
+    motherWeeksWithFullPay: 0,
+    partnerWeeksWithFullPay: 0,
     distribution: '',
   },
   leave: {
@@ -190,15 +180,6 @@ const appContextDefaultValues: appContextType = {
   checkForGapsBetweenTasks: (tasks: Task[]) => {},
   gapInTimeline: false,
   setGapInTimeline: (value: boolean) => {},
-  startAddVacation: false,
-  setStartAddVacation: (value: boolean) => {},
-  localVacation: {
-    mother: 0,
-    partner: 0,
-  },  
-  setLocalVacation: (value: LocalVacationType) => {},
-  resetLocalVacation: () => {},
-  updateLocalVacation: (task: Task) => {},
 };
 const AppContext = createContext<appContextType>(appContextDefaultValues);
 
@@ -241,8 +222,9 @@ export function AppStateProvider({ children }: Props) {
       sharedDays: 0,
     },
   ]);
-  const [motherBusinessDaysWithFullPay, setMotherBusinessDaysWithFullPay] = useState<number>(0);
-  const [partnerBusinessDaysWithFullPay, setPartnerBusinessDaysWithFullPay] = useState<number>(0);
+  const [motherWeeksWithFullPay, setMotherWeeksWithFullPay] = useState<number>(0);
+  const [partnerWeeksWithFullPay, setPartnerWeeksWithFullPay] = useState<number>(0);
+
   const [validation, setValidation] = useState<ValidationType>(appContextDefaultValues.validation);
   const [leave, setLeave] = useState<LeaveType>(appContextDefaultValues.leave);
   const [localLeave, setLocalLeave] = useState<LocalLeaveType>(appContextDefaultValues.localLeave);
@@ -253,8 +235,7 @@ export function AppStateProvider({ children }: Props) {
   });
   const [popupVisibility, setPopupVisibility] = useState<boolean>(false);
   const [gapInTimeline, setGapInTimeline] = useState<boolean>(false);
-  const [startAddVacation, setStartAddVacation] = useState<boolean>(false);
-  const [localVacation, setLocalVacation] = useState<LocalVacationType>(appContextDefaultValues.localVacation);
+
   const updatePopupContext = (popupContext: PopupContext) => {
     setPopupContext(popupContext);
   };
@@ -283,29 +264,7 @@ export function AppStateProvider({ children }: Props) {
   };
   const resetLocalLeave = () => {
     setLocalLeave({ mother: 0, partner: 0, shared: 0 });
-  }
-  const resetLocalVacation = () => {
-    setLocalVacation({ mother: 0, partner: 0 });
-  }
-  const updateLocalVacation = (task:Task) => {
-    let newLocalVacation: LocalVacationType = {
-      mother: 0,
-      partner: 0,
-    };
-    if(task.project === 'mother') {
-      newLocalVacation = {
-        ...localVacation,
-        mother: task.vacationDays,
-      };
-    } else if(task.project === 'partner') {
-      newLocalVacation = {
-        ...localVacation,
-        partner: task.vacationDays,
-      };
-    }
-    setLocalVacation(newLocalVacation);
-  }
-
+  };
   const updateLeaveOnEditTask = (task: Task) => {
     resetLocalLeave();
     const newLocalLeave = {
@@ -498,10 +457,10 @@ export function AppStateProvider({ children }: Props) {
     partnerOccupationalStatus,
     setMotherOccupationalStatus,
     setPartnerOccupationalStatus,
-    motherBusinessDaysWithFullPay,
-    partnerBusinessDaysWithFullPay,
-    setMotherBusinessDaysWithFullPay,
-    setPartnerBusinessDaysWithFullPay,
+    motherWeeksWithFullPay,
+    partnerWeeksWithFullPay,
+    setMotherWeeksWithFullPay,
+    setPartnerWeeksWithFullPay,
     distribution,
     setDistribution,
     popupContext,
@@ -533,12 +492,6 @@ export function AppStateProvider({ children }: Props) {
     checkForGapsBetweenTasks,
     gapInTimeline,
     setGapInTimeline,
-    startAddVacation,
-    setStartAddVacation,
-    updateLocalVacation,
-    resetLocalVacation,
-    setLocalVacation,
-    localVacation,
   };
 
   return (

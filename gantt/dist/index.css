@@ -53,18 +53,18 @@
   font-size: 0.6rem;
   padding: 0.15rem 0.2rem 0rem 0.2rem;
   -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   cursor: pointer;
 }
 ._2TfEi {
   font-size: 0.6rem;
   padding-left: 1rem;
   -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 ._3T42e {
@@ -116,8 +116,15 @@
   background-color: white;
   transform: rotate(135deg);
   top: -7.5px;
-  left: 20%;
+  left: 30px;
 }
+
+@media screen and (max-width: 768px) {
+  ._Z1mNB {
+    left: 140px !important;
+  }
+}
+
 ._2sxpW {
   position: absolute;
   top: 2px;
@@ -174,6 +181,13 @@
   flex-shrink: 0;
   z-index: 999;
   max-width: 300px;
+
+}
+
+@media screen and (max-width: 768px) {
+  ._25P-K {
+    left: 0 !important;
+  }
 }
 
 ._3gVAq {
@@ -197,31 +211,37 @@
   stroke: #fff;
 }
 ._3rUKi:first-of-type {
-  stroke: #EBEDF0;
+  stroke: #ebedf0;
 }
 ._3rUKi:last-of-type {
-  stroke: #EBEDF0;
+  stroke: #ebedf0;
 }
 ._1VHU- {
-  font-size:14px;
-  font-weight:600;
-  padding-left:10px;
+  font-size: 14px;
+  font-weight: 600;
+  padding-left: 10px;
 }
 ._RuwuK {
-  stroke: #EBEDF0;
+  stroke: #ebedf0;
 }
 
 ._9w8d5 {
   text-anchor: middle;
-  fill: #284D62;
-  font-weight:700;
-  font-size:14px;
+  fill: #284d62;
+  font-weight: 700;
+  font-size: 14px;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
   pointer-events: none;
+
+  @media screen and (max-width: 768px) {
+    font-size: 0.9rem;
+    font-weight: 500;
+    font-family: "Inter";
+  }
 }
 
 ._1rLuZ {
@@ -265,9 +285,9 @@
 
 ._31ERP {
   -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   stroke-width: 0;
 }
 
@@ -278,9 +298,9 @@
 
 ._2P2B1 {
   -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 ._1KJ6x {
@@ -290,17 +310,17 @@
 
 ._2RbVy {
   -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   opacity: 0.6;
 }
 
 ._2pZMF {
   -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 ._CZjuD {
