@@ -953,7 +953,7 @@ var GridBody = function GridBody(_ref) {
   startDayText = React.createElement("text", {
     x: startDateX + 10,
     y: y + 22
-  }, "F\xF8dsel, ", birthDate.getDay(), " ", monthName(birthDate));
+  }, "F\xF8dsel, ", birthDate.getDate(), " ", monthName(birthDate));
   return React.createElement("g", {
     className: "gridBody"
   }, React.createElement("g", {

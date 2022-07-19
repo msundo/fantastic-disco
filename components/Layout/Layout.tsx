@@ -20,7 +20,7 @@ const Layout = ({ children }: Props) => {
       {/* 
       //! TODO: activate siteimprove script by uncommenting the following code block 
       */}
-      {/* <script
+      <script
         type='text/javascript'
         dangerouslySetInnerHTML={{
           __html: `
@@ -32,7 +32,7 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(sz
 })();
 //--><!]]>`,
         }}
-      ></script> */}
+      ></script>
     </div>
   );
 };

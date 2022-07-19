@@ -11,6 +11,8 @@ import DatePickerPopup from '../components/DatePickerPopup';
 import SectionLeavePeriodsPrint from '../components/SectionLeavePeriodsPrint';
 import SectionPrintHeader from '../components/SectionPrintHeader';
 import GapInTimelineAlert from '../components/GapInTimelineAlert';
+import Button from '../components/Button';
+import router from 'next/router';
 
 const Timeline: NextPage = () => {
   const {
@@ -134,6 +136,14 @@ const Timeline: NextPage = () => {
       {gapInTimeline && <GapInTimelineAlert />}
       <DatePickerPopup />
       <EditPageSections />
+      <div className='flex justify-center items-center mt-16'>
+        <a onClick={() => router.back()}>
+          <Button type={'icon'}></Button>
+        </a>
+        <a onClick={() => window.print()}>
+        <Button type={'primary'} text={'Gem plan'}></Button>
+        </a>
+      </div>
     </>
   );
 };

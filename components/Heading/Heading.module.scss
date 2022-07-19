@@ -52,11 +52,12 @@
       z-index: 99999;
       background-color: #f4f4f4;
 
-      @media screen and (max-width: 768px) {
-        min-width: 18rem;
-        max-width: 26rem;
-        right: 5.5rem;
-        top: 50%;
+      @media screen and (max-width: 1400px) {
+        min-width: 30rem;
+        max-width: 35rem;
+        left:50%;
+        top: 5rem;
+        transform: translateX(-50%);
       }
 
       &_title {
@@ -80,8 +81,9 @@
         top: 50%;
         transform: translateY(-50%);
 
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 1400px) {
           left: 0;
+          display: none;;
         }
       }
     }

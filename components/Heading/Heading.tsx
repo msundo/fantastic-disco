@@ -27,7 +27,7 @@ const Heading: React.FC<Props> = ({ headingSmall, headingLarge, tooltipText, too
         <div className={cn(s.Heading, 'flex justify-between items-center w-full')}>
           <h2 className={cn(s.Heading_mobile, 'heading')}>{headingLarge}</h2>
           {tooltipText || tooltipTitle ? (
-            <div className={cn(s.Heading_tooltip, 'sm:relative')}>
+            <div className={cn(s.Heading_tooltip, 'relative')}>
               <span
                 tabIndex={1}
                 onKeyPress={handleKeypress}
@@ -41,7 +41,7 @@ const Heading: React.FC<Props> = ({ headingSmall, headingLarge, tooltipText, too
                   className={cn(
                     s.Heading_tooltip_content,
                     isTooltipVisible ? '' : 'hidden',
-                    'fixed md:absolute rounded flex flex-col flex-1 cursor-auto text-left text-xs font-normal'
+                    'absolute rounded flex flex-col flex-1 cursor-auto text-left text-xs font-normal'
                   )}
                 >
                   {tooltipTitle && <h3 className={cn(s.Heading_tooltip_content_title)}>{tooltipTitle}</h3>}
