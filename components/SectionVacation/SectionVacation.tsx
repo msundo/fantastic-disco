@@ -1,11 +1,11 @@
 import cn from 'classnames';
 import s from '../EditPageSections/EditPageSections.module.scss';
 import { useAppState } from '../../context/state';
-import { useState } from 'react';
 import EditItem from '../EditItem/EditItem';
 import e from './SectionVacation.module.scss';
 import Image from 'next/image';
 import { intlFormat } from 'date-fns';
+import { Task } from '../../gantt/dist';
 
 // Demo styles, see 'Styles' section below for some notes on use.
 // import 'react-accessible-accordion/dist/fancy-example.css';
@@ -33,61 +33,51 @@ type SectionAdviseProps = {
     title: string
 }
 
-/*const SectionAdvise: React.FC<SectionAdviseProps> = ({ title }) => {
-
-    return (
-        <div className='flex flex-row'>
-            <div className={'ml-6 mr-40 mb-2'}>
-                <div className={cn(e.SectionVacation_pointer)}>
-                    <div className={cn(e.SectionVacation_circle)} />
-                    <div className={cn(e.SectionVacation_title, '')}>{title}</div>
-                </div>
-            </div>
-        </div>
-    );
-};*/
-
 const SectionVacation: React.FC = () => {
 
-    const { nameOfMother, nameOfPartner, setDatePickerPopupVisible, setDatePickerPopupPerson } = useAppState();
+    const { nameOfMother, nameOfPartner, tasks, setDatePickerPopupVisible, setDatePickerPopupPerson, excludeAllTasksAvailableForSelected, setActiveTask, setStartAddVacation } = useAppState();
 
     const addVacationForMother = () => {
+        excludeAllTasksAvailableForSelected('mother');
+        setStartAddVacation(true);
         setDatePickerPopupVisible(true);
-        setDatePickerPopupPerson(nameOfMother);
+        setDatePickerPopupPerson('mother');
     };
     const addVacationForPartner = () => {
+        excludeAllTasksAvailableForSelected('partner');
+        setStartAddVacation(true);
         setDatePickerPopupVisible(true);
-        setDatePickerPopupPerson(nameOfPartner);
+        setDatePickerPopupPerson('partner');
     };
 
-    const [motherVacation, setMotherVacation] = useState<Vacation[]>([
-        { title: 'Ferie', bodyText: 'Disse uger er øremærket, og betyder at de ikke kan anvendes af anden partner. Læs mere på borger.dk', start: new Date(), end: new Date() },
-        { title: 'Ferie', bodyText: 'Disse uger er øremærket, og betyder at de ikke kan anvendes af anden partner. Læs mere på borger.dk', start: new Date(), end: new Date() }
-    ])
-
-    const [partnerVacation, setPartnerVacation] = useState<Vacation[]>([
-        { title: 'Ferie', bodyText: 'Disse uger er øremærket, og betyder at de ikke kan anvendes af anden partner. Læs mere på borger.dk', start: new Date(), end: new Date() },
-        { title: 'Ferie', bodyText: 'Disse uger er øremærket, og betyder at de ikke kan anvendes af anden partner. Læs mere på borger.dk', start: new Date(), end: new Date() }
-    ])
+    const handleEditTask = (task: Task) => {
+        setActiveTask(task);
+        setStartAddVacation(true);
+        setDatePickerPopupVisible(true);
+        setDatePickerPopupPerson(task.project);
+      };
 
     return (
         <>
             <div className={cn(s.EditPageSections_column, 'mb-10')}>
 
                 <div className={cn(s.EditPageSections_columnHeading, 'mb-8')}>{nameOfMother}</div>
-                {motherVacation &&
-                    motherVacation.map((vacation, index) => {
-                        return (
-                            <EditItem
-                                key={index}
-                                title={vacation.title}
-                                dates={`${intlFormat(vacation.start, dateFormat, dateLocale)} til ${intlFormat(vacation.end, dateFormat, dateLocale)}`}
-                                bodyText={vacation.bodyText}
-                                editType='edit'
-                                editText='Rediger'
-                                editHandler={() => { }}
-                            />
-                        );
+                {tasks &&
+                    tasks.map((task, index) => {
+                        if(task.periodeType ==='Vacation' && task.project === 'mother') {
+                            return (
+                                <EditItem
+                                    key={index}
+                                    title={task.taskTitle}
+                                    dates={`${intlFormat(task.start, dateFormat, dateLocale)} til ${intlFormat(task.end, dateFormat, dateLocale)}`}
+                                    bodyText={task.taskDescription}
+                                    editType='edit'
+                                    editText='Rediger'
+                                    editHandler={() => handleEditTask(task)}
+                                />
+                            );
+                        }
+
                     })
                 }
 
@@ -100,19 +90,22 @@ const SectionVacation: React.FC = () => {
             <div className={cn(s.EditPageSections_column, 'mb-10')}>
 
                 <div className={cn(s.EditPageSections_columnHeading, 'mb-8')}>{nameOfPartner}</div>
-                {partnerVacation &&
-                    partnerVacation.map((vacation, index) => {
-                        return (
-                            <EditItem
-                                key={index}
-                                title={vacation.title}
-                                dates={`${intlFormat(vacation.start, dateFormat, dateLocale)} til ${intlFormat(vacation.end, dateFormat, dateLocale)}`}
-                                bodyText={vacation.bodyText}
-                                editType='edit'
-                                editText='Rediger'
-                                editHandler={() => { }}
-                            />
-                        );
+                {tasks &&
+                    tasks.map((task, index) => {
+                        if(task.periodeType ==='Vacation' && task.project === 'partner') {
+                            return (
+                                <EditItem
+                                    key={index}
+                                    title={task.taskTitle}
+                                    dates={`${intlFormat(task.start, dateFormat, dateLocale)} til ${intlFormat(task.end, dateFormat, dateLocale)}`}
+                                    bodyText={task.taskDescription}
+                                    editType='edit'
+                                    editText='Rediger'
+                                    editHandler={() => handleEditTask(task)}
+                                />
+                            );
+                        }
+
                     })
                 }
 

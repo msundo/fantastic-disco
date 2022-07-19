@@ -522,12 +522,12 @@ var StandardTooltipContent = function StandardTooltipContent(_ref2) {
       return handleEdit();
     },
     className: styles$2.tooltipEditContainer,
-    disabled: task.periodeType !== "Leave" && task.periodeType !== "PaternityLeave"
+    disabled: task.periodeType !== "Leave" && task.periodeType !== "PaternityLeave" && task.periodeType !== "Vacation"
   }, React.createElement("svg", {
     width: "17",
     height: "17",
     viewBox: "0 0 17 17",
-    fill: task.periodeType !== "Leave" && task.periodeType !== "PaternityLeave" ? "#D0D0D0" : "#284D62",
+    fill: task.periodeType !== "Leave" && task.periodeType !== "PaternityLeave" && task.periodeType !== "Vacation" ? "#D0D0D0" : "#284D62",
     xmlns: "http://www.w3.org/2000/svg"
   }, React.createElement("path", {
     d: "M10.4441 5.68556L11.3129 6.55444L2.7574 15.1111H1.88863V14.2422L10.4441 5.68556ZM13.8436 0C13.6076 0 13.362 0.0944444 13.1826 0.273889L11.4545 2.00222L14.9957 5.54389L16.7238 3.81556C17.0921 3.44722 17.0921 2.85222 16.7238 2.48389L14.5141 0.273889C14.3252 0.085 14.0892 0 13.8436 0ZM10.4441 3.01278L0 13.4583V17H3.54118L13.9853 6.55444L10.4441 3.01278Z"
@@ -940,11 +940,10 @@ var GridBody = function GridBody(_ref) {
     }
   }
 
-  console.log(birthDate);
   startDay = React.createElement("line", {
-    x1: startDateX,
+    x1: startDateX + 1,
     y1: y + 22,
-    x2: startDateX,
+    x2: startDateX + 1,
     y2: 0,
     stroke: "#0B2432",
     strokeWidth: "2",

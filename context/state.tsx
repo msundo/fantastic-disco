@@ -54,6 +54,10 @@ type LocalLeaveType = {
   partner: number;
   shared: number;
 };
+type LocalVacationType = {
+  mother: number;
+  partner: number;
+};
 
 type appContextType = {
   dateOfBirth: Date | null;
@@ -101,6 +105,12 @@ type appContextType = {
   checkForGapsBetweenTasks: (tasks: Task[]) => void;
   gapInTimeline: boolean;
   setGapInTimeline: (value: boolean) => void;
+  startAddVacation: boolean;
+  setStartAddVacation: (value: boolean) => void;
+  localVacation: LocalVacationType;
+  setLocalVacation: (value: LocalVacationType) => void;
+  resetLocalVacation: () => void;
+  updateLocalVacation: (task: Task) => void;
 };
 
 const appContextDefaultValues: appContextType = {
@@ -180,6 +190,15 @@ const appContextDefaultValues: appContextType = {
   checkForGapsBetweenTasks: (tasks: Task[]) => {},
   gapInTimeline: false,
   setGapInTimeline: (value: boolean) => {},
+  startAddVacation: false,
+  setStartAddVacation: (value: boolean) => {},
+  localVacation: {
+    mother: 0,
+    partner: 0,
+  },
+  setLocalVacation: (value: LocalVacationType) => {},
+  resetLocalVacation: () => {},
+  updateLocalVacation: (task: Task) => {},
 };
 const AppContext = createContext<appContextType>(appContextDefaultValues);
 
@@ -224,7 +243,6 @@ export function AppStateProvider({ children }: Props) {
   ]);
   const [motherWeeksWithFullPay, setMotherWeeksWithFullPay] = useState<number>(0);
   const [partnerWeeksWithFullPay, setPartnerWeeksWithFullPay] = useState<number>(0);
-
   const [validation, setValidation] = useState<ValidationType>(appContextDefaultValues.validation);
   const [leave, setLeave] = useState<LeaveType>(appContextDefaultValues.leave);
   const [localLeave, setLocalLeave] = useState<LocalLeaveType>(appContextDefaultValues.localLeave);
@@ -235,7 +253,8 @@ export function AppStateProvider({ children }: Props) {
   });
   const [popupVisibility, setPopupVisibility] = useState<boolean>(false);
   const [gapInTimeline, setGapInTimeline] = useState<boolean>(false);
-
+  const [startAddVacation, setStartAddVacation] = useState<boolean>(false);
+  const [localVacation, setLocalVacation] = useState<LocalVacationType>(appContextDefaultValues.localVacation);
   const updatePopupContext = (popupContext: PopupContext) => {
     setPopupContext(popupContext);
   };
@@ -265,6 +284,28 @@ export function AppStateProvider({ children }: Props) {
   const resetLocalLeave = () => {
     setLocalLeave({ mother: 0, partner: 0, shared: 0 });
   };
+  const resetLocalVacation = () => {
+    setLocalVacation({ mother: 0, partner: 0 });
+  };
+  const updateLocalVacation = (task: Task) => {
+    let newLocalVacation: LocalVacationType = {
+      mother: 0,
+      partner: 0,
+    };
+    if (task.project === 'mother') {
+      newLocalVacation = {
+        ...localVacation,
+        mother: task.vacationDays,
+      };
+    } else if (task.project === 'partner') {
+      newLocalVacation = {
+        ...localVacation,
+        partner: task.vacationDays,
+      };
+    }
+    setLocalVacation(newLocalVacation);
+  };
+
   const updateLeaveOnEditTask = (task: Task) => {
     resetLocalLeave();
     const newLocalLeave = {
@@ -492,6 +533,12 @@ export function AppStateProvider({ children }: Props) {
     checkForGapsBetweenTasks,
     gapInTimeline,
     setGapInTimeline,
+    startAddVacation,
+    setStartAddVacation,
+    updateLocalVacation,
+    resetLocalVacation,
+    setLocalVacation,
+    localVacation,
   };
 
   return (

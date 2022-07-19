@@ -31,6 +31,7 @@ const Timeline: NextPage = () => {
     updateLeaveOnEditTask,
     checkForGapsBetweenTasks,
     gapInTimeline,
+    setStartAddVacation,
   } = useAppState();
 
   const { deviceWidth, breakpoints } = useBreakpoint();
@@ -58,9 +59,12 @@ const Timeline: NextPage = () => {
 
   const handleEditTask = (task: Task) => {
     setActiveTask(task);
+    // createDatesToExclude(task);
+    if (task.periodeType === 'Vacation') {
+      setStartAddVacation(true);
+    }
     setDatePickerPopupVisible(true);
     setDatePickerPopupPerson(task.project);
-    // createDatesToExclude(task);
   };
 
   useEffect(() => {

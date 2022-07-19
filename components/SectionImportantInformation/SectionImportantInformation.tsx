@@ -53,7 +53,7 @@ const SectionItem: React.FC<SectionItemProps> = ({ title, count, bodyText, squar
 };
 
 const SectionImportantInformation: React.FC = () => {
-  const { nameOfMother, nameOfPartner, tasks, motherWeeksWithFullPay, partnerWeeksWithFullPay } = useAppState();
+  const { nameOfMother, nameOfPartner, tasks, motherWeeksWithFullPay, partnerWeeksWithFullPay, dateOfBirth } = useAppState();
 
   let motherDaysWithFullPay = motherWeeksWithFullPay * 5;
   const motherLeave = tasks.filter((task) => task.project === 'mother');

@@ -17,9 +17,10 @@ import TextInput from '../TextInput';
 
 registerLocale('da', da);
 
-import { createTaskForPartner, createTaskForMother } from '../../helpers/helpers';
+import { createTaskForPartner, createTaskForMother, createVacationForPartner, createVacationForMother } from '../../helpers/helpers';
 import getDay from 'date-fns/getDay';
 import { addBusinessDays, addWeeks, closestTo, differenceInBusinessDays, subBusinessDays } from 'date-fns';
+import { Project } from '../../gantt/dist/components/task-item/project/project';
 
 const dateFormat = {
   year: 'numeric',
@@ -54,6 +55,11 @@ const DatePickerPopup: React.FC = () => {
     updateLeaveOnEditTask,
     resetLocalLeave,
     checkForGapsBetweenTasks,
+    startAddVacation,
+    setStartAddVacation,
+    updateLocalVacation,
+    resetLocalVacation,
+    localVacation,
   } = useAppState();
 
   // TODO: When editing a task, we need to take the existing leave on the task into account when reducing remaining leave.
@@ -81,20 +87,23 @@ const DatePickerPopup: React.FC = () => {
       createDatesToExclude(activeTask);
       updateCurrentTaskBusinessDays(activeTask);
       updateLeaveOnEditTask(activeTask);
+      if (activeTask.periodeType === 'Vacation') {
+        updateLocalVacation(activeTask);
+      }
     } else {
       resetLocalLeave();
+      resetLocalVacation();
       setDateRange([null, null]);
     }
   }, [activeTask]);
 
-  useEffect(() => {
-    console.log('STATE UPDATE: ', leave);
-  }, [leave, setLeave]);
-
   const handleEditTask = (task: Task) => {
     setActiveTask(task);
-    setDatePickerPopupVisible(true);
+    if (task.periodeType === 'Vacation') {
+      setStartAddVacation(true);
+    }
     setDatePickerPopupPerson(task.project);
+    setDatePickerPopupVisible(true);
   };
 
   const changeDateIntervals = (dateRange) => {
@@ -102,19 +111,30 @@ const DatePickerPopup: React.FC = () => {
       setIncludeIntervals(null);
       return;
     }
-    //* Calculate available leave based on remaining leave in state
-    const nextTask = findNextAvailableTask(dateRange[0], datePickerPopupPerson);
-    const potentialMaxDate = addBusinessDays(
-      dateRange[0],
-      leave.remaining[datePickerPopupPerson] + leave.remaining.shared + localLeave[datePickerPopupPerson] + localLeave.shared
-    );
     let maxDate;
-    if (nextTask) {
-      const datesArray = [subBusinessDays(nextTask.start, 1), potentialMaxDate];
-      maxDate = closestTo(dateRange[0], datesArray);
+    const nextTask = findNextAvailableTask(dateRange[0], datePickerPopupPerson);
+    if (startAddVacation) {
+      const potentialMaxDate = addWeeks(dateOfBirth, 48);
+      if (nextTask) {
+        const datesArray = [subBusinessDays(nextTask.start, 1), potentialMaxDate];
+        maxDate = closestTo(dateRange[0], datesArray);
+      } else {
+        maxDate = potentialMaxDate;
+      }
     } else {
-      maxDate = potentialMaxDate;
+      const potentialMaxDate = addBusinessDays(
+        dateRange[0],
+        leave.remaining[datePickerPopupPerson] + leave.remaining.shared + localLeave[datePickerPopupPerson] + localLeave.shared
+      );
+      if (nextTask) {
+        const datesArray = [subBusinessDays(nextTask.start, 1), potentialMaxDate];
+        maxDate = closestTo(dateRange[0], datesArray);
+      } else {
+        maxDate = potentialMaxDate;
+      }
     }
+    //* Calculate available leave based on remaining leave in state
+
     const datesToInclude: { start: Date; end: Date }[] | undefined = [];
     datesToInclude.push({ start: dateRange[0], end: maxDate });
     setIncludeIntervals(datesToInclude);
@@ -134,6 +154,37 @@ const DatePickerPopup: React.FC = () => {
    */
   const applyDates = () => {
     const calculateBusinessDays = differenceInBusinessDays(endDate, startDate) + 1;
+    setDatePickerPopupVisible(false);
+    setNotificationIsVisible(true);
+    if (startAddVacation) {
+      if (activeTask) {
+        const taskId = activeTask?.id;
+        const activeTaskIndex = tasks.findIndex((t) => t.id === taskId);
+        let newTasks = [...tasks];
+        newTasks[activeTaskIndex] = {
+          ...newTasks[activeTaskIndex],
+          start: startDate,
+          end: endDate,
+        };
+        setTasks(newTasks);
+      } else {
+        if (datePickerPopupPerson === 'mother') {
+          const task = createVacationForMother(startDate, endDate, 0, 0, 0, nameOfMother, false, handleEditTask);
+          const newTasks = [...tasks, task];
+          setTasks(newTasks);
+        } else if (datePickerPopupPerson === 'partner') {
+          const task = createVacationForPartner(startDate, endDate, 0, 0, 0, nameOfPartner, false, handleEditTask);
+          const newTasks = [...tasks, task];
+          setTasks(newTasks);
+        }
+      }
+      setActiveTask(null);
+      setDateRange([]); //TODO: dateRange could be set to start after current endDate?
+      setNotificationType(activeTask ? 'success' : 'addLeaveSuccess'); // if adding new leave, set to addLeaveSuccess
+      setStartAddVacation(false);
+      return;
+    }
+
     const remainingIndividualDays = activeTask
       ? leave.remaining[datePickerPopupPerson] + localLeave[datePickerPopupPerson]
       : leave.remaining[datePickerPopupPerson];
@@ -249,7 +300,6 @@ const DatePickerPopup: React.FC = () => {
           motherIndividualDays: motherIndividualDays,
           partnerIndividualDays: partnerIndividualDays,
         };
-        console.log(newTasks[activeTaskIndex]);
         setTasks(newTasks);
       }
     } else {
@@ -361,6 +411,7 @@ const DatePickerPopup: React.FC = () => {
     setActiveTask(null);
     setDatePickerPopupVisible(false);
     setNotificationIsVisible(false);
+    setStartAddVacation(false);
   };
 
   const closePopup = () => {
@@ -378,6 +429,9 @@ const DatePickerPopup: React.FC = () => {
       };
       setLeave(newLeave);
     }
+    if (startAddVacation) {
+      setStartAddVacation(false);
+    }
   };
 
   const rejectChanges = () => {
@@ -385,7 +439,10 @@ const DatePickerPopup: React.FC = () => {
     setNotificationIsVisible(false);
   };
 
-  console.log('includeIntervals', includeIntervals);
+  let title = 'Tilpas orlovsperiode';
+
+  if (activeTask?.periodeType === 'PaternityLeave') title = 'Vælg startdato for orlovsperiode';
+  if (startAddVacation) title = 'Tilføj ferie';
 
   return (
     <>
@@ -393,9 +450,9 @@ const DatePickerPopup: React.FC = () => {
         className={classnames(s.DatePickerPopup, datePickerPopupVisible ? '' : 'hidden', 'fixed top-0 left-0 right-0 bottom-0 z-50 w-[100vw] overflow-auto')}
       >
         <div className={classnames('w-full h-full bg-[#0B2432] bg-opacity-25 flex justify-center')}>
-          <div className={classnames(s.DatePickerPopup_container, 'bg-[#F4F4F4] relative flex flex-col justify-center items-center mt-auto mb-auto')}>
+          <div className={classnames(s.DatePickerPopup_container, 'bg-[#F4F4F4] relative flex flex-col justify-center items-center mb-auto')}>
             <h2 role='heading' className={classnames(s.DatePickerPopup_container_title, 'text-4xl text-center')}>
-              {activeTask?.periodeType === 'PaternityLeave' ? 'Vælg startdato for orlovsperiode' : 'Tilpas orlovsperiode'}
+              {title}
             </h2>
 
             <div className={'flex justify-center mb-0 md:mb-12'}>
@@ -463,11 +520,17 @@ const DatePickerPopup: React.FC = () => {
               </div>
 
               <div className={classnames(s.DatePickerPopup_container_buttons, 'w-full mt-6')}>
-                <Button type={'primary'} text={'Gem'} clickHandler={savePeriod} classNames={'mt-2'} />
+                <Button
+                  type={'primary'}
+                  text={'Gem'}
+                  clickHandler={startAddVacation ? applyDates : savePeriod}
+                  disabled={!dateRange[0] || !dateRange[1]}
+                  classNames={'mt-2'}
+                />
 
-                {!activeTask || activeTask?.periodeType !== 'PaternityLeave' ? (
+                {activeTask && activeTask?.periodeType !== 'PaternityLeave' ? (
                   <button className={classnames(s.DatePickerPopup_container_iconText)} onClick={() => removeLeave()}>
-                    Slet orlovsperiode
+                    {startAddVacation ? 'Slet ferie' : 'Slet orlovsperiode'}
                   </button>
                 ) : null}
               </div>

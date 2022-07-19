@@ -113,7 +113,7 @@
     font-size: 1.8rem;
     font-weight: 500;
     line-height: 1.15;
-    color: #0B2432;
+    color: #0b2432;
     margin-bottom: 1.6rem;
     cursor: pointer;
 
@@ -129,7 +129,7 @@
 
     &:after {
       display: inline-block;
-      content: "";
+      content: '';
       height: 1rem;
       width: 1rem;
       margin-left: 1.5rem;
@@ -144,8 +144,8 @@
       }
     }
 
-    &[aria-expanded="true"]::after,
-    &[aria-selected="true"]::after {
+    &[aria-expanded='true']::after,
+    &[aria-selected='true']::after {
       transform: scale(1, -1) rotate(-135deg);
       // transform: rotate(45deg);
     }
@@ -248,13 +248,13 @@
     margin-left: 0.5rem;
   }
 
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
   @media print {
     display: none;
-
-    &:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
   }
 }
 

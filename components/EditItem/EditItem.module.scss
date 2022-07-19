@@ -2,7 +2,7 @@
   background: #ebedf0;
   display: flex;
   flex-direction: column;
-  padding: 2.6rem 2.6rem 0;
+  padding: 2.4rem 2.4rem 0;
   margin-bottom: 3rem;
   flex: 1 1 auto;
   border-bottom-left-radius: 4px;
@@ -23,7 +23,7 @@
     font-weight: 400;
     line-height: 115%;
     color: #454545;
-    margin-bottom: 2.4rem;
+    margin-bottom: 1.6rem;
 
     @media print {
       margin-bottom: 1rem;
@@ -34,7 +34,7 @@
     font-size: 1.6rem;
     font-weight: 700;
     line-height: 115%;
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
 
     @media print {
       margin-bottom: 0.4rem;
@@ -60,8 +60,8 @@
     line-height: 140%;
     color: #284d62;
     background-color: #fff;
-    margin-left: -2.6rem;
-    margin-right: -2.6rem;
+    margin-left: -2.4rem;
+    margin-right: -2.4rem;
     padding: 1.5rem 2.6rem;
     text-decoration-line: underline;
     border-bottom: 1px solid #afb8c7;
@@ -72,8 +72,12 @@
     display: flex;
     cursor: pointer;
 
+    &:hover {
+      background-color: #f9fafb;
+    }
+
     &:before {
-      content: url("/svgs/editColor.svg");
+      content: url('/svgs/editColor.svg');
       display: block;
       width: 2.2rem;
       height: auto;
@@ -87,7 +91,7 @@
       border-color: #ebedf0;
 
       &:before {
-        content: url("/svgs/edit.svg");
+        content: url('/svgs/edit.svg');
         display: block;
         width: 2.2rem;
         height: auto;
@@ -103,7 +107,7 @@
     display: flex;
 
     &:before {
-      content: url("/svgs/distribution.svg");
+      content: url('/svgs/distribution.svg');
       display: block;
       width: 2.2rem;
       height: auto;

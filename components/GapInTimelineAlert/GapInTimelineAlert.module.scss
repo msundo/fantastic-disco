@@ -5,6 +5,9 @@
   margin-top: 3rem;
   max-width: 1200px;
 
+  // width: 8px;
+  // align-self: stretch;
+  // background: #febb30;
   &_item {
     display: flex;
     flex-direction: row;
@@ -15,9 +18,14 @@
 
     &::before {
       content: '';
-      width: 8px;
+      flex: 0 0 auto;
+      width: 40px;
       align-self: stretch;
-      background: #febb30;
+      background-image: url('/svgs/warning.svg');
+      background-size: 22px;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-color: #febb30;
     }
   }
 }

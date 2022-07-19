@@ -627,15 +627,6 @@ var StandardTooltipContent = function StandardTooltipContent(_ref2) {
       },
       task.taskTitle
     ),
-    /* TODO: remove */
-    // React__default.createElement(
-    //   'div',
-    //   {
-    //     className: styles$2.tooltipTitle,
-    //   },
-    //   `Mother: ${task.motherIndividualDays} Partner: ${task.partnerIndividualDays} Shared: ${task.sharedDays}`
-    // ),
-    /* TODO: remove */
     React__default.createElement(
       'b',
       {
@@ -670,7 +661,7 @@ var StandardTooltipContent = function StandardTooltipContent(_ref2) {
           return handleEdit();
         },
         className: styles$2.tooltipEditContainer,
-        disabled: task.periodeType !== 'Leave' && task.periodeType !== 'PaternityLeave',
+        disabled: task.periodeType !== 'Leave' && task.periodeType !== 'PaternityLeave' && task.periodeType !== 'Vacation',
       },
       React__default.createElement(
         'svg',
@@ -678,7 +669,7 @@ var StandardTooltipContent = function StandardTooltipContent(_ref2) {
           width: '17',
           height: '17',
           viewBox: '0 0 17 17',
-          fill: task.periodeType !== 'Leave' && task.periodeType !== 'PaternityLeave' ? '#D0D0D0' : '#284D62',
+          fill: task.periodeType !== 'Leave' && task.periodeType !== 'PaternityLeave' && task.periodeType !== 'Vacation' ? '#D0D0D0' : '#284D62',
           xmlns: 'http://www.w3.org/2000/svg',
         },
         React__default.createElement('path', {
@@ -1286,7 +1277,7 @@ var GridBody = function GridBody(_ref) {
   }
 
   startDay = React__default.createElement('line', {
-    x1: startDateX,
+    x1: startDateX + 1,
     y1: y + 22,
     x2: startDateX + 1,
     y2: 0,

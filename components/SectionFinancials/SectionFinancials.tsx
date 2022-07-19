@@ -6,7 +6,7 @@ import { useAppState } from '../../context/state';
 import { useCalculateLeave } from '../../helpers/calculateLeave';
 import { getWeeksAndDays } from '../../helpers/formatters';
 
-const SectionFinancials: React.FC<Props> = ({ }) => {
+const SectionFinancials: React.FC<Props> = ({}) => {
   const { nameOfMother, nameOfPartner, motherWeeksWithFullPay, partnerWeeksWithFullPay } = useAppState();
 
   const { calculatedLeave } = useCalculateLeave();

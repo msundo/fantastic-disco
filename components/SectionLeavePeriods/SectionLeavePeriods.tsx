@@ -67,6 +67,7 @@ const SectionLeavePeriods: React.FC<Props> = ({}) => {
   const handleEditTask = (task: Task) => {
     setActiveTask(task);
     setDatePickerPopupVisible(true);
+    setDatePickerPopupPerson(task.project);
   };
 
   const [motherCanAddLeave, setMotherCanAddLeave] = useState<boolean | null>(null);

@@ -10,6 +10,74 @@ import { useAppState } from '../context/state';
 //   console.log(task);
 // }
 
+export function createVacationForMother(
+  startDate: Date,
+  endDate: Date,
+  motherIndividualDays: number,
+  partnerIndividualDays: number,
+  sharedDays: number,
+  mothersName: string,
+  isFirstTask: boolean = false,
+  handleEditTask: (task: Task) => void
+) {
+  return {
+    onEdit: (task: Task) => handleEditTask(task),
+    taskDescription:
+      'Du skal være opmærksom på, at hvis du ønsker at holde mere end 5 ugers ferie i træk efterfulgt af orlov med barselsdagpenge, skal du søge om barselsdagpenge på ny.',
+    taskTitle: 'Ferie',
+    periodeType: 'Vacation',
+    start: startDate,
+    end: endDate,
+    name: uuidv4(),
+    id: uuidv4(),
+    progress: 100,
+    type: 'task',
+    project: 'mother',
+    extendedTask: true,
+    isDisabled: false,
+    rowIndex: 0,
+    isFirstTask: isFirstTask,
+    styles: { progressColor: '#AE017E', progressSelectedColor: '#052951' },
+    motherIndividualDays: motherIndividualDays,
+    partnerIndividualDays: partnerIndividualDays,
+    sharedDays: sharedDays,
+  };
+}
+
+export function createVacationForPartner(
+  startDate: Date,
+  endDate: Date,
+  motherIndividualDays: number,
+  partnerIndividualDays: number,
+  sharedDays: number,
+  mothersName: string,
+  isFirstTask: boolean = false,
+  handleEditTask: (task: Task) => void
+) {
+  return {
+    onEdit: (task: Task) => handleEditTask(task),
+    taskDescription:
+      'Du skal være opmærksom på, at hvis du ønsker at holde mere end 5 ugers ferie i træk efterfulgt af orlov med barselsdagpenge, skal du søge om barselsdagpenge på ny.',
+    taskTitle: 'Ferie',
+    periodeType: 'Vacation',
+    start: startDate,
+    end: endDate,
+    name: uuidv4(),
+    id: uuidv4(),
+    progress: 100,
+    type: 'task',
+    project: 'partner',
+    extendedTask: true,
+    isDisabled: false,
+    rowIndex: 0,
+    isFirstTask: isFirstTask,
+    styles: { progressColor: '#AE017E', progressSelectedColor: '#052951' },
+    motherIndividualDays: motherIndividualDays,
+    partnerIndividualDays: partnerIndividualDays,
+    sharedDays: sharedDays,
+  };
+}
+
 export function createTaskForMother(
   startDate: Date,
   endDate: Date,
